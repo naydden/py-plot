@@ -82,7 +82,7 @@ font_legend = {
 def global_init():
     plt.rc('text', usetex=True)
     plt.rc('font', family='sans-serif', size=14)
-    plt.rc('text.latex', preamble=[r'\usepackage{sfmath}',  r'\usepackage{siunitx}'])
+    plt.rc('text.latex', preamble=r'\usepackage{sfmath}\usepackage{siunitx}')
 
 def plotter(data):
     global_init()
@@ -141,3 +141,9 @@ def plotter(data):
     
     with open(location + '.json', 'w') as f:
         json.dump(data, f, indent = 2)
+        
+        
+def plotter_json(fileLocator):
+    with open(fileLocator, "r") as f:
+        data = json.load(f)
+    plotter(data)    
