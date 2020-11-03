@@ -31,6 +31,7 @@ data =  {
                 'xlabel' : '',
                 'ylabel' : '',
                 'labelsize' : 12,
+                'legend' : True,
                 'grid' : True,
                 'ij' : [0, 0]
             }
@@ -127,6 +128,9 @@ def plotter(data):
         ax[i,j].set_ylabel(p['ylabel'], fontdict=font)
         ax[i,j].set_title(p['title'], fontdict=font_title)
         ax[i,j].tick_params(labelsize = p['labelsize'])
+        
+        if p['legend']:
+            ax[i,j].legend(loc='best',prop=font_legend)
         
         if p['grid']:
             ax[i,j].grid()
