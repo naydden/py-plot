@@ -42,10 +42,9 @@ data =  {
     'sharey' : True,
     ?'suptitle' : 'Global figure title',
     'figsize' : (8,6),
-    'save' : {
-        'name' : 'test',
-        'path' : ''
-    }
+    'save' : True,
+    'name' : 'test',
+    'path' : ''
 }
 
 Where 'data' is a dictionary for a single figure. It can be used to
@@ -138,13 +137,14 @@ def plotter(data):
     if 'suptitle' in data:
         fig.suptitle(data['suptitle'])
     
-    location = data['save']['path'] + data['save']['name']
+    if data['save']:
+        location = data['path'] + data['name']
     
-    fig.savefig(location+'_eps', format='eps')
-    fig.savefig(location+'_png', format='png')
-    
-    with open(location + '.json', 'w') as f:
-        json.dump(data, f, indent = 2)
+        fig.savefig(location+'_eps', format='eps')
+        fig.savefig(location+'_png', format='png')
+        
+        with open(location + '.json', 'w') as f:
+            json.dump(data, f, indent = 2)
         
         
 def plotter_json(fileLocator):
