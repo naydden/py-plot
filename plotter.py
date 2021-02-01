@@ -27,6 +27,18 @@ data =  {
                         'marker' : '*'
                     }
                 ],
+                ? 'errorbars': [
+                    {
+                        'x' : [],
+                        'x-error': [],
+                        'y-error': [],
+                        'y' : [],
+                        'label' : 'Example label',
+                        'c' : 'red',
+                        'marker' : '*',
+                        
+                    }                    
+                ],
                 'title' : '',
                 'xlabel' : '',
                 'ylabel' : '',
@@ -42,10 +54,9 @@ data =  {
     'sharey' : True,
     ?'suptitle' : 'Global figure title',
     'figsize' : (8,6),
-    'save' : {
-        'name' : 'test',
-        'path' : ''
-    }
+    'save' : True,
+    'name' : 'test',
+    'path' : ''
 }
 
 Where 'data' is a dictionary for a single figure. It can be used to
@@ -122,7 +133,19 @@ def plotter(data):
                                     marker = l['marker'],
                                     label = l['label']
                 )
-            
+
+        if 'errorbars' in p:
+            for l in p['errorbars']:
+                x = l['x']
+                y = l['y']
+                ax[i,j].errorbar(x,y,
+                                xerr=l['x-error'],
+                                yerr=l['y-error'],
+                                label=l['label'],
+                                fmt = 'x',
+                                capsize=5
+                )
+                    
         
         ax[i,j].set_xlabel(p['xlabel'], fontdict=font)
         ax[i,j].set_ylabel(p['ylabel'], fontdict=font)
@@ -138,13 +161,14 @@ def plotter(data):
     if 'suptitle' in data:
         fig.suptitle(data['suptitle'])
     
-    location = data['save']['path'] + data['save']['name']
-    
-    fig.savefig(location+'_eps', format='eps')
-    fig.savefig(location+'_png', format='png')
-    
-    with open(location + '.json', 'w') as f:
-        json.dump(data, f, indent = 2)
+    if data['save']:
+        location = data['path'] + data['name']
+        
+        fig.savefig(location+'.eps', format='eps')
+        fig.savefig(location+'.png', format='png')
+        
+        with open(location + '.json', 'w') as f:
+            json.dump(data, f, indent = 2)
         
         
 def plotter_json(fileLocator):
