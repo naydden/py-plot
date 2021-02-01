@@ -163,9 +163,9 @@ def plotter(data):
     
     if data['save']:
         location = data['path'] + data['name']
-        
-        fig.savefig(location+'.eps', format='eps')
-        fig.savefig(location+'.png', format='png')
+    
+        fig.savefig(location+'_eps', format='eps')
+        fig.savefig(location+'_png', format='png')
         
         with open(location + '.json', 'w') as f:
             json.dump(data, f, indent = 2)
