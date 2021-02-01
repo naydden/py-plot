@@ -118,10 +118,15 @@ def plotter(data):
             for l in p['lines']:
                 x = l['x']
                 y = l['y']
+                if 'linestyle' not in l:
+                    linestyle = '-'
+                else:
+                    linestyle = l['linestyle']
                 ax[i,j].plot(x,y, 
                                  color = l['color'],
                                  marker = l['marker'],
-                                 label = l['label']
+                                 label = l['label'],
+                                 linestyle = linestyle
                 )
 
         if 'scatters' in p:
