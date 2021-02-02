@@ -94,7 +94,7 @@ font_legend = {
 def global_init():
     plt.rc('text', usetex=True)
     plt.rc('font', family='sans-serif', size=14)
-    plt.rc('text.latex', preamble=r'\usepackage{sfmath}\usepackage{siunitx}')
+    plt.rc('text.latex', preamble=r'\usepackage{sfmath}\usepackage{siunitx}\usepackage{wasysym}')
 
 def plotter(data):
     global_init()
@@ -122,11 +122,13 @@ def plotter(data):
                     linestyle = '-'
                 else:
                     linestyle = l['linestyle']
+                # markers_on = [0]
                 ax[i,j].plot(x,y, 
                                  color = l['color'],
                                  marker = l['marker'],
                                  label = l['label'],
-                                 linestyle = linestyle
+                                 linestyle = linestyle,
+                                 # markevery=markers_on
                 )
 
         if 'scatters' in p:
