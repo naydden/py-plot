@@ -15,7 +15,8 @@ data =  {
                         'y' : [],
                         'label' : 'Example label',
                         'color' : 'red',
-                        'marker' : '*'
+                        'marker' : '*',
+                        'linestyle': '-'
                     }
                 ],
                 ?'scatters': [
@@ -42,6 +43,7 @@ data =  {
                 'title' : '',
                 'xlabel' : '',
                 'ylabel' : '',
+                'ylim': [],
                 'labelsize' : 12,
                 'legend' : True,
                 'grid' : True,
@@ -64,9 +66,9 @@ create several subfigures and several lines per subfigure.
 
 @author: bobz
 """
-import math, json
-import numpy as np
+import json
 import matplotlib.pyplot as plt
+
 
 
 # GLOBALS
@@ -152,8 +154,10 @@ def plotter(data):
                                 fmt = 'x',
                                 capsize=5
                 )
-                    
         
+        if 'ylim' in p:
+            ax[i,j].set_ylim(p['ylim'])
+            
         ax[i,j].set_xlabel(p['xlabel'], fontdict=font)
         ax[i,j].set_ylabel(p['ylabel'], fontdict=font)
         ax[i,j].set_title(p['title'], fontdict=font_title)
@@ -171,8 +175,8 @@ def plotter(data):
     if data['save']:
         location = data['path'] + data['name']
     
-        fig.savefig(location+'_eps', format='eps')
-        fig.savefig(location+'_png', format='png')
+        fig.savefig(location+'.eps', format='eps')
+        fig.savefig(location+'.png', format='png')
         
         with open(location + '.json', 'w') as f:
             json.dump(data, f, indent = 2)
