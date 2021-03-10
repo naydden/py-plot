@@ -154,9 +154,18 @@ def plotter(data):
                                 fmt = 'x',
                                 capsize=5
                 )
-        
+        if 'texts' in p:
+            for text in p['texts']:
+                x = text['x']
+                y = text['y']
+                ax[i,j].text(x,y,
+                             text['text']
+                )        
         if 'ylim' in p:
             ax[i,j].set_ylim(p['ylim'])
+        
+        if 'xlim' in p:
+            ax[i,j].set_xlim(p['xlim'])
             
         ax[i,j].set_xlabel(p['xlabel'], fontdict=font)
         ax[i,j].set_ylabel(p['ylabel'], fontdict=font)
