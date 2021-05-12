@@ -116,6 +116,9 @@ def plotter(data):
     for p in data['plots']:
         i = p['ij'][0]
         j = p['ij'][1]
+        
+        ax2 = {}
+            
         if 'lines' in p:
             for l in p['lines']:
                 x = l['x']
@@ -125,13 +128,24 @@ def plotter(data):
                 else:
                     linestyle = l['linestyle']
                 # markers_on = [0]
-                ax[i,j].plot(x,y, 
+                if 'ylabel2' in l:
+                    ax2 = ax[i,j].twinx()
+                    ax2.plot(x,y, 
                                  color = l['color'],
                                  marker = l['marker'],
                                  label = l['label'],
                                  linestyle = linestyle,
                                  # markevery=markers_on
-                )
+                                 )
+                    ax2.legend(loc="upper right")
+                else:
+                    ax[i,j].plot(x,y, 
+                                     color = l['color'],
+                                     marker = l['marker'],
+                                     label = l['label'],
+                                     linestyle = linestyle,
+                                     # markevery=markers_on
+                                     )
 
         if 'scatters' in p:
             for l in p['scatters']:
@@ -169,11 +183,16 @@ def plotter(data):
             
         ax[i,j].set_xlabel(p['xlabel'], fontdict=font)
         ax[i,j].set_ylabel(p['ylabel'], fontdict=font)
+        
+        if 'ylabel2' in p:
+            ax2.set_ylabel(p['ylabel2'], fontdict=font)
+            
         ax[i,j].set_title(p['title'], fontdict=font_title)
         ax[i,j].tick_params(labelsize = p['labelsize'])
         
         if p['legend']:
-            ax[i,j].legend(loc='best',prop=font_legend)
+            ax[i,j].legend(loc='upper left',prop=font_legend)
+            # ax[i,j].legend(loc='best',prop=font_legend)
         
         if p['grid']:
             ax[i,j].grid()
