@@ -80,28 +80,46 @@ font_title = {
     'size': 16,
 }
 
-font = {
+font_g = {
     'family': 'sans-serif',
     'color':  'black',
     'weight': 'normal',
-    'size': 14,
+    'size': 12,
 }
 
 font_legend = {
     'family': 'sans-serif',
     'weight': 'normal',
-    'size': 12,
+    'size': 10,
 }
 
-def global_init():
+def global_init(font={'family' : 'sans-serif', 'size' : 14}):
     plt.rc('text', usetex=True)
-    plt.rc('font', family='sans-serif', size=14)
+    plt.rc('font', family=font['family'], size=font['size'])
     plt.rc('text.latex', preamble=r'\usepackage{sfmath}\usepackage{siunitx}\usepackage{wasysym}')
+    plt.rcParams['figure.constrained_layout.use'] = True
 
 def plotter(data):
     global_init()
     nrows = data['nrows']
     ncols = data['ncols']
+
+    font_l = {}
+    font_legend_l = {}
+    font_title_l = {}
+    
+    if 'globals' in data:      
+        font_l = data['globals']['font']
+        font_legend_l = data['globals']['font_legend']
+        font_title_l = data['globals']['font_title']
+        
+        global_init(font_l)
+        
+    else: 
+        font_l = font_g
+        font_legend_l = font_legend
+        font_title_l = font_title
+        
     
     fig, ax = plt.subplots(
                             nrows,
@@ -137,7 +155,7 @@ def plotter(data):
                                  linestyle = linestyle,
                                  # markevery=markers_on
                                  )
-                    ax2.legend(loc="upper right")
+                    ax2.legend(loc="upper right", prop=font_legend_l)
                 else:
                     ax[i,j].plot(x,y, 
                                      color = l['color'],
@@ -145,7 +163,7 @@ def plotter(data):
                                      label = l['label'],
                                      linestyle = linestyle,
                                      # markevery=markers_on
-                                     )
+                     )
 
         if 'scatters' in p:
             for l in p['scatters']:
@@ -181,17 +199,18 @@ def plotter(data):
         if 'xlim' in p:
             ax[i,j].set_xlim(p['xlim'])
             
-        ax[i,j].set_xlabel(p['xlabel'], fontdict=font)
-        ax[i,j].set_ylabel(p['ylabel'], fontdict=font)
+        ax[i,j].set_xlabel(p['xlabel'], fontdict=font_l)
+        ax[i,j].set_ylabel(p['ylabel'], fontdict=font_l)
         
         if 'ylabel2' in p:
-            ax2.set_ylabel(p['ylabel2'], fontdict=font)
-            
-        ax[i,j].set_title(p['title'], fontdict=font_title)
+            ax2.set_ylabel(p['ylabel2'], fontdict=font_l)
+          
+        if 'title' in p:
+            ax[i,j].set_title(p['title'], fontdict=font_title_l)
         ax[i,j].tick_params(labelsize = p['labelsize'])
         
-        if p['legend']:
-            ax[i,j].legend(loc='upper left',prop=font_legend)
+        if 'legend' in p:
+            ax[i,j].legend(loc=str(p['legend']),prop=font_legend_l)
             # ax[i,j].legend(loc='best',prop=font_legend)
         
         if p['grid']:
@@ -204,6 +223,7 @@ def plotter(data):
         location = data['path'] + data['name']
     
         fig.savefig(location+'.eps', format='eps')
+        fig.savefig(location+'.svg', format='svg')
         fig.savefig(location+'.png', format='png')
         
         with open(location + '.json', 'w') as f:
@@ -211,6 +231,7 @@ def plotter(data):
         
         
 def plotter_json(fileLocator):
+    global_init()
     with open(fileLocator, "r") as f:
         data = json.load(f)
     plotter(data)    
