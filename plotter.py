@@ -188,11 +188,20 @@ def plotter(data):
                 )
         if 'texts' in p:
             for text in p['texts']:
-                x = text['x']
-                y = text['y']
-                ax[i,j].text(x,y,
-                             text['text']
-                )        
+                if text['annotate']:
+                    xi = text['x']
+                    yi = text['y']
+                    xe = text['xe']
+                    ye = text['ye']
+                    ax[i,j].annotate('', xy=(xi, yi), xytext=(xe, ye),
+                                     arrowprops=dict(arrowstyle="<-", facecolor='black'))   
+                else:
+                    x = text['x']
+                    y = text['y']
+                    ax[i,j].text(x,y,
+                                 text['text']
+                    )
+                
         if 'ylim' in p:
             ax[i,j].set_ylim(p['ylim'])
         
