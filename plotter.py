@@ -66,8 +66,9 @@ create several subfigures and several lines per subfigure.
 
 @author: bobz
 """
-import json
+import json, os
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 
 
 
@@ -77,14 +78,14 @@ font_title = {
     'family': 'sans-serif',
     'color':  'black',
     'weight': 'normal',
-    'size': 16,
+    'size': 12,
 }
 
 font_g = {
     'family': 'sans-serif',
     'color':  'black',
     'weight': 'normal',
-    'size': 12,
+    'size': 11,
 }
 
 font_legend = {
@@ -108,7 +109,7 @@ def plotter(data):
     font_legend_l = {}
     font_title_l = {}
     
-    if 'globals' in data:      
+    if 'globals' in data:
         font_l = data['globals']['font']
         font_legend_l = data['globals']['font_legend']
         font_title_l = data['globals']['font_title']
@@ -135,8 +136,7 @@ def plotter(data):
         i = p['ij'][0]
         j = p['ij'][1]
         
-        ax2 = {}
-            
+        ax2 = {}       
         if 'lines' in p:
             for l in p['lines']:
                 x = l['x']
@@ -155,6 +155,7 @@ def plotter(data):
                                  linestyle = linestyle,
                                  # markevery=markers_on
                                  )
+                    
                     ax2.legend(loc="upper right", prop=font_legend_l)
                 else:
                     ax[i,j].plot(x,y, 
@@ -162,8 +163,10 @@ def plotter(data):
                                      marker = l['marker'],
                                      label = l['label'],
                                      linestyle = linestyle,
+                                     linewidth=1
                                      # markevery=markers_on
                      )
+                    # ax[i,j].xaxis.set_major_locator(ticker.MultipleLocator(1))
 
         if 'scatters' in p:
             for l in p['scatters']:
@@ -199,7 +202,8 @@ def plotter(data):
                     x = text['x']
                     y = text['y']
                     ax[i,j].text(x,y,
-                                 text['text']
+                                 text['text'],
+                                 rotation = text['rotation']
                     )
                 
         if 'ylim' in p:
@@ -219,7 +223,7 @@ def plotter(data):
         ax[i,j].tick_params(labelsize = p['labelsize'])
         
         if 'legend' in p:
-            ax[i,j].legend(loc=str(p['legend']),prop=font_legend_l)
+            ax[i,j].legend(loc=str(p['legend']),prop=font_legend_l, title=p['legend-title'], title_fontsize=font_legend_l['size'])
             # ax[i,j].legend(loc='best',prop=font_legend)
         
         if p['grid']:
@@ -229,6 +233,8 @@ def plotter(data):
         fig.suptitle(data['suptitle'])
     
     if data['save']:
+        if not os.path.exists(data['path']):
+            os.makedirs(data['path'])
         location = data['path'] + data['name']
     
         fig.savefig(location+'.eps', format='eps')
