@@ -7,6 +7,26 @@ Input to functions should be a python dictionary with the following example form
 
 ```javascript
 data =  {
+    'globals:': {
+        'font': {
+                'family': 'sans-serif',
+                'color':  'black',
+                'weight': 'normal',
+                'size': 10,
+        },
+        'font_title':  {
+                'family': 'sans-serif',
+                'color':  'black',
+                'weight': 'normal',
+                'size': 12,
+        },
+        'font_legend':  {
+                'family': 'sans-serif',
+                'color':  'black',
+                'weight': 'normal',
+                'size': 8,
+        }
+    },
     'plots' : [   
             {
                 ?'lines' : [
@@ -15,7 +35,8 @@ data =  {
                         'y' : [],
                         'label' : 'Example label',
                         'color' : 'red',
-                        'marker' : '*'
+                        'marker' : '*',
+                        'linestyle': '-'
                     }
                 ],
                 ?'scatters': [
@@ -27,11 +48,36 @@ data =  {
                         'marker' : '*'
                     }
                 ],
+                ? 'errorbars': [
+                    {
+                        'x' : [],
+                        'x-error': [],
+                        'y-error': [],
+                        'y' : [],
+                        'label' : 'Example label',
+                        'c' : 'red',
+                        'marker' : '*',
+                        
+                    }                    
+                ],
+                ? 'texts': [
+                    {
+                         'annotate': False,
+                         'x': 2,
+                         'y': 200,
+                         'text': 'stable',
+                         'rotation': 0                               
+                     },
+                ],
                 'title' : '',
+                'description': '',
                 'xlabel' : '',
                 'ylabel' : '',
+                'ylim': [],
+                'xlim': [],
                 'labelsize' : 12,
-                'legend' : True,
+                'legend' : 'best',
+                'legend-title': 'Legend title here or empty',
                 'grid' : True,
                 'ij' : [0, 0]
             }
@@ -42,10 +88,9 @@ data =  {
     'sharey' : True,
     ?'suptitle' : 'Global figure title',
     'figsize' : (8,6),
-    'save' : {
-        'name' : 'test',
-        'path' : ''
-    }
+    'save' : True,
+    'name' : 'test',
+    'path' : ''
 }
 ```
 

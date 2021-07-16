@@ -7,6 +7,26 @@ Input to functions should be a python dictionary with the following example
 format:
 
 data =  {
+    'globals:': {
+        'font': {
+                'family': 'sans-serif',
+                'color':  'black',
+                'weight': 'normal',
+                'size': 10,
+        },
+        'font_title':  {
+                'family': 'sans-serif',
+                'color':  'black',
+                'weight': 'normal',
+                'size': 12,
+        },
+        'font_legend':  {
+                'family': 'sans-serif',
+                'color':  'black',
+                'weight': 'normal',
+                'size': 8,
+        }
+    },
     'plots' : [   
             {
                 ?'lines' : [
@@ -40,12 +60,24 @@ data =  {
                         
                     }                    
                 ],
+                ? 'texts': [
+                    {
+                         'annotate': False,
+                         'x': 2,
+                         'y': 200,
+                         'text': 'stable',
+                         'rotation': 0                               
+                     },
+                ],
                 'title' : '',
+                'description': '',
                 'xlabel' : '',
                 'ylabel' : '',
                 'ylim': [],
+                'xlim': [],
                 'labelsize' : 12,
-                'legend' : True,
+                'legend' : 'best',
+                'legend-title': 'Legend title here or empty',
                 'grid' : True,
                 'ij' : [0, 0]
             }
@@ -223,8 +255,10 @@ def plotter(data):
         ax[i,j].tick_params(labelsize = p['labelsize'])
         
         if 'legend' in p:
-            ax[i,j].legend(loc=str(p['legend']),prop=font_legend_l, title=p['legend-title'], title_fontsize=font_legend_l['size'])
-            # ax[i,j].legend(loc='best',prop=font_legend)
+            if 'legend-title' in p:
+                ax[i,j].legend(loc=str(p['legend']),prop=font_legend_l, title=p['legend-title'], title_fontsize=font_legend_l['size'])
+            else:
+                ax[i,j].legend(loc=str(p['legend']),prop=font_legend_l)
         
         if p['grid']:
             ax[i,j].grid()
