@@ -127,7 +127,7 @@ font_legend = {
 }
 
 def global_init(font={'family' : 'sans-serif', 'size' : 14}):
-    plt.rc('text', usetex=True)
+    plt.rc('text', usetex=False)
     plt.rc('font', family=font['family'], size=font['size'])
     plt.rc('text.latex', preamble=r'\usepackage{sfmath}\usepackage{siunitx}\usepackage{wasysym}')
     plt.rcParams['figure.constrained_layout.use'] = True
